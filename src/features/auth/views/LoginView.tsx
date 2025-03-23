@@ -10,13 +10,19 @@ const LoginView = () => {
     const submitLogin = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        const email = emailInput.current!.value;
-        const password = passwordInput.current!.value;
+        const email = emailInput.current!.value.trim();
+        const password = passwordInput.current!.value.trim();
+
+        if (!email || !password) {
+            setErrorMessage("Please provide the email and password");
+            return;
+        }
+        
 
         try {
             setLoading(true);
             const loginReponseData = await authService.login({email, password});
-            console.log(loginReponseData);
+            localStorage.setItem("token", loginReponseData.token);
             setErrorMessage(null);
         } catch (error) {
             setErrorMessage(error instanceof Error ? error.message : "Fail the connect to the api");
