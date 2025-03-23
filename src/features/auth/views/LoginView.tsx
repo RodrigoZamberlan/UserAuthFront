@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import { authService } from "../services/authService";
+import { tokenService } from "../services/tokenService";
 
 const LoginView = () => {
     const emailInput = useRef<HTMLInputElement>(null);
@@ -22,7 +23,7 @@ const LoginView = () => {
         try {
             setLoading(true);
             const loginReponseData = await authService.login({email, password});
-            localStorage.setItem("token", loginReponseData.token);
+            tokenService.setToken(loginReponseData.token);
             setErrorMessage(null);
         } catch (error) {
             setErrorMessage(error instanceof Error ? error.message : "Fail the connect to the api");
