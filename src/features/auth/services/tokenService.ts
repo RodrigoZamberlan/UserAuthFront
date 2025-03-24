@@ -1,11 +1,11 @@
 export const tokenService = {
-    setToken: (tokenValue: string) => { 
+    setToken: (tokenValue: string): void => { 
         localStorage.setItem("jwtToken", tokenValue) 
     },
-    getToken: () => {
-        localStorage.getItem("jwtToken");
+    getToken: (): string | null => {
+        return localStorage.getItem("jwtToken");
     },
-    removeToken: () => {
+    removeToken: (): void => {
         localStorage.removeItem("jwtToken");
     }
 }

@@ -1,4 +1,4 @@
-import { verifyResponse } from "../../../shared/utils/verifyResponse";
+import { tokenService } from "../../auth/services/tokenService";
 import { TUser } from "../types/User";
 
 const API_URL = "http://localhost:5297/api/users";
@@ -13,12 +13,29 @@ export const usersService = {
             body: JSON.stringify(user)
         });
 
-        verifyResponse(response, "Fail to create the user");
+        if (!response.ok) { 
+            throw new Error("Fail to fetch the user's info");
+        }
+
         return response.json();
     },
     getAll: async (): Promise<TUser[]> => {
-        const response = await fetch(API_URL);
-        verifyResponse(response, "Fail to get the list of users");
+        const response = await fetch(API_URL, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${tokenService.getToken()}`
+            }
+        });
+        
+        if (!response.ok) {
+            if (response.status === 401) {
+                throw new Error("Only admin user's have access for this area")
+            }
+            
+            throw new Error("Fail to fetch the user's info");
+        }
+
         return response.json();
     }
 }

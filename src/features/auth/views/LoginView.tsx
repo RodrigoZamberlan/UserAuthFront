@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { authService } from "../services/authService";
 import { tokenService } from "../services/tokenService";
-import { Form } from "react-router-dom";
+import Form from "../../../shared/components/form/Form";
 
 const LoginView = () => {
   const emailInput = useRef<HTMLInputElement>(null);
@@ -36,7 +36,7 @@ const LoginView = () => {
 
   return (
     <div id="viewLogin">
-      <Form onSubmit={submitLogin}>
+      <Form onSubmitHandler={submitLogin}>
         <input
           name="email"
           ref={emailInput}

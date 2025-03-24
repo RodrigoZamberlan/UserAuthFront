@@ -1,5 +1,3 @@
-import { verifyResponse } from "../../../shared/utils/verifyResponse";
-
 const API_URL = "http://localhost:5297/api/auth";
 
 interface ILoginData {
@@ -21,7 +19,9 @@ export const authService = {
             body: JSON.stringify(loginData)
         });
 
-        verifyResponse(response, "Invalid email and password");
+        if (!response.ok) {
+            throw new Error("Invalid email and password");
+        }
 
         return response.json();
     }
